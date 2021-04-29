@@ -1,0 +1,3 @@
+some rc
+vim
+rsh
