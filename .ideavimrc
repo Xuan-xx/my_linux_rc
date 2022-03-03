@@ -1,0 +1,21 @@
+sethandler <C-V> n-v-x:vim i:ide
+sethandler J n-v-x:vim i:ide
+sethandler K n-v-x:vim i:ide
+sethandler L n-v-x:vim i:ide
+sethandler H n-v-x:vim i:ide
+sethandler <C-e> a:vim
+sethandler <C-a> a:vim
+
+"set search 
+set hlsearch
+set smartcase
+set ignorecase
+
+set nu
+set relativenumber
+
+"my map
+map J 5j
+map K 5k
+map H ^
+map L $
