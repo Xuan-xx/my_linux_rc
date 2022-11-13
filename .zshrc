@@ -1,14 +1,22 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+HOMEBREW=/opt/homebrew
+export PATH=$HOMEBREW/opt:$HOMEBREW/bin:$HOMEBREW/opt/go@1.18/bin:$PATH
+# clash
+# PROXY='127.0.0.1:7890' 
+# shadowrocket
+PROXY='127.0.0.1:1082' 
+export HTTP_PROXY=$PROXY
+export HTTPS_PROXY=$PROXY
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="ys"
+ZSH_THEME="myAgnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -70,21 +78,37 @@ ZSH_THEME="ys"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-	git
-	zsh-autosuggestions
-)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.oh-my-zsh/plugins/incr/incr*.zsh
+source /opt/homebrew/opt/zplug/init.zsh
+
+# zplug
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zdharma/fast-syntax-highlighting"
+# zplug "plugins/vi-mode", from:oh-my-zsh
+zplug "plugins/common-aliases", from:oh-my-zsh
+zplug "plugins/sudo", from:oh-my-zsh
+zplug "plugins/compleat", from:oh-my-zsh
+zplug "plugins/rand-quote", from:oh-my-zsh
+zplug "plugins/extract", from:oh-my-zsh
 
 # User configuration
+# History config
+HISTSIZE=10000
+SAVEHIST=10000
+# autosuggest
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+bindkey '^ ' autosuggest-execute
+# vi-node
+VI_MODE_SET_CURSOR=true
+# subsearch
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 
 # export MANPATH="/usr/local/man:$MANPATH"
-PROXY='127.0.0.1:7890'
-export HTTP_PROXY=$PROXY
-export HTTPS_PROXY=$PROXY
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -95,12 +119,6 @@ export HTTPS_PROXY=$PROXY
 # else
 #   export EDITOR='mvim'
 # fi
-
-#go
-export GOROOT=/usr/local/go
-export GOPATH=~/go
-export PATH=$PATH:$GOROOT/bin
-export GO111MODULE=off
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -113,12 +131,23 @@ export GO111MODULE=off
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias vz="vim ~/.zshrc"
+alias sz="source ~/.zshrc"
+alias vv="vim ~/.vimrc"
+alias python="python3.10"
 alias ra="ranger"
-alias S="screenfetch | lolcat"
 alias N="neofetch | lolcat"
-alias vzrc="vim ~/.zshrc"
-alias szrc="source ~/.zshrc"
-alias sdhn="shutdown -h now"
-alias sdrn="shutdown -r now"
-alias clash="bash ~/Mycmd/clash.sh"
-alias rj="bash ~/Mycmd/rj.sh"
+alias vim="nvim"
+eval $(thefuck --alias)
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
+date | cowsay
